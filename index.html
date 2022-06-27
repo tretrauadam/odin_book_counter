@@ -1,77 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library</title>
-    <link rel="stylesheet"  href="style.css">
+<html>
+	<head>
+		<script src="main.js" defer></script>
+		<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		<link rel="stylesheet" href="style.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-</head>
-<body>
-    <header class="header">
-        <div class="container">
-            <h1>Library</h1>
-            <nav>
-                <div class="lds-dual-ring active" id="loadingRing"></div>
-                <div class="logged-out" id="loggedOut">
-                  <button class="'btn" id="logInBtn">Log In</button>
-                </div>
-                <div class="logged-in" id="'loggedIn">
-                    <button class="btn" id="accountBtn">Account</button>
-                    <button class="btn" id="logOutBtn"> Log out</button>
-                </div>
-            </nav>
-        </div>
-    </header>
-            <main class="main-content">
-                <button class="'btn btn-add" id="addBookBtn">+ Add Book</button>
-                <div class="books-grid" id='booksGrid'></div>
-            </main>
-            <footer class="footer">
-                <p>
-                    Copyright 
-                    <script>
-                        document.write(new Dat().getFullYear())
-                    </script>
-                    Adam Zermane 
-                </p>
-                <a href="www.github.com" target="_blank"><i class="fab fa-github"></i>
-                </a>
-            </footer>
-            <div class="modal" id="addBookModal">
-                <form class="add-book-form" id="addBookForm">
-                    <h3> Add new book</h3>
-                    <input
-                      class="input"
-                      type="text"
-                      id="title"
-                      placeholder="title"
-                      required maxlength="100" 
-                    />
-                    <p class="error-msg" id="errorMsg"></p>
-                    <input
-                      class="input"
-                      type="text"
-                      id="author"
-                      placeholder="Author"
-                      required maxlength="100"
-                    />
-                    <input
-                       class="input"
-                       type="number"
-                       id="pages"
-                       placeholder="Pages"
-                       required max="9999" 
-                    />
-                    <div class="is-read">
-                        <label for="is-read">Have you read it ? </label>
-                        <input class="checkbox" type="checkbox" id="isRead"/> 
-                    </div>
-                    <button class="btn btn-light-green" type="submit">Submit</button>
-                </form>
-            </div>
-            <div class="modal" id="accountModal"></div>
-            <div class="overlay" id="overlay"></div>
-</body>
+	</head>
+	<body>
+		<div id="page-wrapper">
+		<div class="container-fluid">
+
+			<header>
+				<div class="container">
+					<h1 id="page-title">library</h1>
+				</div>
+			</header>
+			
+			<div class="container">
+				<a id="form-toggle-btn" class="btn btn-outline-light" href="#form-collapse" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="form-collapse"><h5>Submit a new book here</h5></a>
+				<div id="form-container">
+					
+
+					<form class="collapse" id="form-collapse" name="submitBook">
+						<div class="row" >
+							<div class="form-group col-sm-6">
+								<label for="book-title">Title:</label><br>
+								<input type="text" class="form-control" name="title" id="book-title">
+							</div>
+							<div class="form-group col-sm-6">
+								<label for="book-author">Author:</label><br>
+								<input type="text" class="form-control" name="author" id="book-author">
+							</div>
+							<div class="form-group col-sm-6">
+								<label>Number of pages:</label><br>
+								<input type="text" class="form-control" name="pages" id="book-pages">
+							</div>
+							<div class="form-group col-sm-6">
+								<label for="book-read">Read:</label><br>
+	
+								<div class="form-check ">
+									<div class="form-checkbox">
+										<input type="radio" class="form-check-input" name="read" id="book-read" value="Yes">
+										<label class="form-check-label" for="book-read">
+											Yes
+										</label>
+									</div>
+									<!-- <br> -->
+									<div class="form-checkbox">
+										<input type="radio" class="form-check-input" name="read" id="book-not-read" value="No">
+										<label class="form-check-label" for="book-not-read">
+										No
+										</label> 
+									</div>
+								</div>
+							</div>
+							<!-- <input > -->
+
+						</div>
+						<button type="button" value="Submit" id="formSubmit" class="btn btn-success" onclick="submitForm()"></buttontype="button" value="Submit" id="formSubmit" class="btn btn-primary" onclick="submitForm()">Submit</button>
+					</form>
+				</div>
+
+				<div id="main-feed" class="row"></div>
+			</div>
+
+		</div>
+	</div>
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	</body>	
 </html>
