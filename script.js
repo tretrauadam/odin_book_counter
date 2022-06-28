@@ -1,103 +1,174 @@
-var myLibrary = [];
+"use strict";
 
-if(!localStorage.getItem('myLibArray')) {
-	localStorage.setItem('myLibArray', JSON.stringify(myLibrary));
-  } else {
-	var obj = localStorage.getItem('myLibArray');
-	myLibrary =  JSON.parse(obj);
-  }
-
-const mainFeed = document.getElementById('main-feed');
-const mainForm = document.getElementsByName('submitBook')[0];
+const formContainer = document.querySelector("#container");
+const form = document.querySelector("#form");
+const newBook = document.querySelector("#new-book");
+const overlay = document.querySelector(".overlay");
+const closeButton = document.querySelector(".close");
+const bookshelf = document.querySelector(".bookshelf");
+let books = JSON.parse(localStorage.getItem("books")) || [];
+let formOpen = false;
 
 class Book {
+  constructor(title, author, pages, read) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+  }
+}
 
-    constructor( title, author, pages, readStatus ) {
-        this.title = title;
-        this.author = author;
-        this.pages = pages;
-        this.readStatus = readStatus;
+function formOpenOrClosed() {
+  if (formOpen) {
+    formContainer.style.transform = "scale(0)";
+    newBook.style.transform = "rotate(0)";
+    form.reset();
+    overlay.style.opacity = 0;
+    formOpen = false;
+  } else {
+    formContainer.style.transform = "scale(1)";
+    newBook.style.transform = "rotate(45deg)";
+    overlay.style.opacity = 1;
+    formOpen = true;
+  }
+}
+
+// close modal
+function closeModal() {
+  formContainer.style.transform = "scale(0)";
+  overlay.style.opacity = 0;
+  newBook.style.transform = "rotate(0)";
+  form.reset();
+  formOpen = false;
+}
+
+function addBook(i) {
+  let bookNode = document.createElement("div");
+  bookNode.classList.add("book");
+  bookNode.setAttribute("data-index", `${i}`);
+
+  const title = document.getElementById("title").value;
+  let titleNode = document.createElement("h2");
+  titleNode.innerHTML = `Title: ${title}`;
+
+  const author = document.getElementById("author").value;
+  let authorNode = document.createElement("h3");
+  authorNode.innerHTML = `Author: ${author}`;
+
+  const pages = document.getElementById("pages").value;
+  let pageNode = document.createElement("h3");
+  pageNode.innerHTML = `Pages: ${pages}`;
+
+  const read = document.getElementById("read").value;
+  let readNode = document.createElement("h3");
+  readNode.innerHTML = `Read? ${read}${read === "Yes" ? "😃" : "😢"}`;
+
+  let updateNode = document.createElement("button");
+  updateNode.classList = "update";
+  updateNode.innerHTML = `Update <i class="fas fa-pen"></i>`;
+
+  let trashNode = document.createElement("button");
+  trashNode.classList = "trash";
+  trashNode.innerHTML = `Delete <i class="fas fa-trash-alt">`;
+
+  const book = new Book(title, author, pages, read);
+  books.push(book);
+  localStorage.setItem("books", JSON.stringify(books));
+  bookNode.appendChild(titleNode);
+  bookNode.appendChild(authorNode);
+  bookNode.appendChild(pageNode);
+  bookNode.appendChild(readNode);
+  bookNode.appendChild(updateNode);
+  bookNode.appendChild(trashNode);
+  bookshelf.appendChild(bookNode);
+  formOpenOrClosed();
+  form.reset();
+
+  // update book status
+  updateNode.addEventListener("click", () => {
+    if (readNode.innerHTML === "Read? No😢") {
+      readNode.innerHTML = "Read? Yes😃";
+      book.read = "Yes";
+      localStorage.setItem("books", JSON.stringify(books));
+    } else {
+      readNode.innerHTML = "Read? No😢";
+      book.read = "No";
+      localStorage.setItem("books", JSON.stringify(books));
     }
-
+  });
+  // delete book
+  trashNode.addEventListener("click", () => {
+    bookshelf.removeChild(bookNode);
+    books.splice(bookNode, 1);
+    localStorage.setItem("books", JSON.stringify(books));
+  });
 }
 
-function addBookToLibrary( book ) {
-	myLibrary.push( book );
-	localStorage.setItem('myLibArray', JSON.stringify(myLibrary));
-	render();
-}
+function getBooks() {
+  books.forEach(function (book, i) {
+    let bookNode = document.createElement("div");
+    bookNode.classList.add("book");
+    bookNode.setAttribute("data-index", `${i}`);
 
-function removeBookFromLibrary(index) {
-	myLibrary.splice(index, 1);
-	localStorage.setItem('myLibArray', JSON.stringify(myLibrary));
-	render();
-}
+    const title = document.getElementById("title").value;
+    let titleNode = document.createElement("h2");
+    titleNode.innerHTML = `Title: ${book.title}`;
 
-function toggleRead(index) {
-	myLibrary[index]['readStatus'] = !myLibrary[index]['readStatus'];
-	localStorage.setItem('myLibArray', JSON.stringify(myLibrary));
-	render();
-}
+    const author = document.getElementById("author").value;
+    let authorNode = document.createElement("h3");
+    authorNode.innerHTML = `Author: ${book.author}`;
 
-function submitForm() {
-	let title = document.getElementById('book-title').value;
-	let author = document.getElementById('book-author').value;
-	let pages = document.getElementById('book-pages').value;
-	let readStatus;
-	if(document.getElementById('book-read').checked) {
-		readStatus = true;
-	  }else if(document.getElementById('book-not-read').checked) {
-		readStatus = false;
-	  }
+    const pages = document.getElementById("pages").value;
+    let pageNode = document.createElement("h3");
+    pageNode.innerHTML = `Pages: ${book.pages}`;
 
-    let newBook = new Book( title, author, pages, readStatus );
+    const read = document.getElementById("read").value;
+    let readNode = document.createElement("h3");
+    readNode.innerHTML = `Read? ${book.read}${
+      book.read === "Yes" ? "😃" : "😢"
+    }`;
 
-	addBookToLibrary( newBook );
+    let updateNode = document.createElement("button");
+    updateNode.classList = "update";
+    updateNode.innerHTML = `Update <i class="fas fa-pen"></i>`;
 
-	mainForm.reset();
-	return false;
-}
+    let trashNode = document.createElement("button");
+    trashNode.classList = "trash";
+    trashNode.innerHTML = `Delete <i class="fas fa-trash-alt">`;
 
+    bookNode.appendChild(titleNode);
+    bookNode.appendChild(authorNode);
+    bookNode.appendChild(pageNode);
+    bookNode.appendChild(readNode);
+    bookNode.appendChild(updateNode);
+    bookNode.appendChild(trashNode);
+    bookshelf.appendChild(bookNode);
 
-function render() {
-
-	mainFeed.innerHTML = '';
-
-	for (let i = myLibrary.length-1; i >= 0; i--) {
-		let div = document.createElement('div');
-		div.setAttribute('class', 'col-sm-6 col-md-4 ');
-		div.innerHTML = `
-			<div class="card">
-				<div class="card-body">
-					<h5 class="card-title">${myLibrary[i].title}</h5>
-					<ul>
-						<li>Author: ${myLibrary[i].author}</li>
-						<li>Pages: ${myLibrary[i].pages}</li>
-						<li>Status: ${ (myLibrary[i].readStatus) ? 'Read' : 'Not read' }</li>
-					</ul>
-					<div class="dflex justify-content-between">
-					<div class="btn btn-outline-${ (myLibrary[i].readStatus) ? 'secondary' : 'success' } toggleRead card-button" data-index="${i}">${(myLibrary[i].readStatus) ? 'Mark as unread' : 'Mark as read'}</div>
-					<div class="btn btn-outline-danger remove-btn card-button" data-index="${i}">Remove book</div>
-					</div>
-				</div>
-			</div>
-		`;
-		mainFeed.appendChild(div);	
-	}
-
-    const removeBtns = document.querySelectorAll('.remove-btn');
-    removeBtns.forEach( (button) => {
-        button.addEventListener('click', (e) => {
-            removeBookFromLibrary(e.target.dataset.index);
-        });
+    // update book status
+    updateNode.addEventListener("click", () => {
+      if (readNode.innerHTML === "Read? No😢") {
+        readNode.innerHTML = "Read? Yes😃";
+        book.read = "Yes";
+        localStorage.setItem("books", JSON.stringify(books));
+      } else {
+        readNode.innerHTML = "Read? No😢";
+        book.read = "No";
+        localStorage.setItem("books", JSON.stringify(books));
+      }
     });
-
-    const toggleReadBtns = document.querySelectorAll('.toggleRead');
-    toggleReadBtns.forEach( (button) => {
-        button.addEventListener('click', (e) => {
-            toggleRead(e.target.dataset.index);
-        });
+    // delete book
+    trashNode.addEventListener("click", () => {
+      bookshelf.removeChild(bookNode);
+      books.splice(bookNode, 1);
+      localStorage.setItem("books", JSON.stringify(books));
     });
+  });
 }
 
-render();
+window.addEventListener("load", getBooks);
+newBook.addEventListener("click", formOpenOrClosed);
+closeButton.addEventListener("click", closeModal);
+form.addEventListener("submit", (e, i) => {
+  e.preventDefault();
+  addBook(i);
+});

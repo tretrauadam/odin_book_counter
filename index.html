@@ -1,74 +1,70 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<script src="main.js" defer></script>
-		<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-		<link rel="stylesheet" href="style.css">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library</title>
+    <script
+      src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"
+      data-auto-a11y="true"
+    ></script>
+    <link rel="shortcut icon" href="./favicon/books.png" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h2>Virtual Library</h2>
+      <div></div>
+      <div></div>
+      <!-- Adds books here -->
+    </header>
+    <button id="new-book">+</button>
 
-	</head>
-	<body>
-		<div id="page-wrapper">
-		<div class="container-fluid">
+    <div class="overlay"></div>
+    <div class="bookshelf"></div>
 
-			<header>
-				<div class="container">
-					<h1 id="page-title">library</h1>
-				</div>
-			</header>
-			
-			<div class="container">
-				<a id="form-toggle-btn" class="btn btn-outline-light" href="#form-collapse" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="form-collapse"><h5>Submit a new book here</h5></a>
-				<div id="form-container">
-					
-
-					<form class="collapse" id="form-collapse" name="submitBook">
-						<div class="row" >
-							<div class="form-group col-sm-6">
-								<label for="book-title">Title:</label><br>
-								<input type="text" class="form-control" name="title" id="book-title">
-							</div>
-							<div class="form-group col-sm-6">
-								<label for="book-author">Author:</label><br>
-								<input type="text" class="form-control" name="author" id="book-author">
-							</div>
-							<div class="form-group col-sm-6">
-								<label>Number of pages:</label><br>
-								<input type="text" class="form-control" name="pages" id="book-pages">
-							</div>
-							<div class="form-group col-sm-6">
-								<label for="book-read">Read:</label><br>
-	
-								<div class="form-check ">
-									<div class="form-checkbox">
-										<input type="radio" class="form-check-input" name="read" id="book-read" value="Yes">
-										<label class="form-check-label" for="book-read">
-											Yes
-										</label>
-									</div>
-									<!-- <br> -->
-									<div class="form-checkbox">
-										<input type="radio" class="form-check-input" name="read" id="book-not-read" value="No">
-										<label class="form-check-label" for="book-not-read">
-										No
-										</label> 
-									</div>
-								</div>
-							</div>
-							<!-- <input > -->
-
-						</div>
-						<button type="button" value="Submit" id="formSubmit" class="btn btn-success" onclick="submitForm()"></buttontype="button" value="Submit" id="formSubmit" class="btn btn-primary" onclick="submitForm()">Submit</button>
-					</form>
-				</div>
-
-				<div id="main-feed" class="row"></div>
-			</div>
-
-		</div>
-	</div>
-		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-	</body>	
+    <section id="popup">
+      <div id="container">
+        <h1>New Book</h1>
+        <div class="close">+</div>
+        <form id="form" action="/" method="GET">
+          <label for="title">Title:</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Book Title"
+            autocomplete="off"
+            required
+          /><br />
+          <label for="author">Author:</label>
+          <input
+            type="text"
+            id="author"
+            name="author"
+            placeholder="Author"
+            autocomplete="off"
+            required
+          /><br />
+          <label for="pages">Number of pages:</label>
+          <input
+            type="number"
+            id="pages"
+            name="pages"
+            placeholder="Pages"
+            autocomplete="off"
+            required
+          /><br />
+          <label for="read">Read the book?</label><br />
+          <select name="read" id="read">
+            <option value="Yes">Yes 😃</option>
+            <option value="No">No 😢</option>
+          </select>
+          <br />
+          <input type="submit" value="Submit" />
+        </form>
+      </div>
+    </section>
+    <script src="script.js"></script>
+  </body>
 </html>
